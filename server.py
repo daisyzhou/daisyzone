@@ -1,14 +1,19 @@
-import http.server
-import signal
-import socketserver
-import threading
+from flask import Flask
+from flask import render_template
+from flask import request
 
-PORT = 80
-Handler = http.server.SimpleHTTPRequestHandler
+app = Flask(__name__)
 
-httpd = socketserver.TCPServer(("", PORT), Handler)
-print("serving at port", PORT)
-s_thread = threading.Thread(target=httpd.serve_forever)
-s_thread.start()
-signal.signal(signal.SIGTERM, httpd.shutdown)
-s_thread.join(10)
+
+@app.route('/')
+def home_page():
+    return render_template("index.html")
+
+@app.route('/radlibs')
+def madlibs_home():
+    return render_template("madlibs.html")
+
+@app.route('/radlibs/answer', methods=['POST'])
+def madlibs_answer():
+    noun1 = request.form(["noun1"])
+    return render_template("madlibs.html")
