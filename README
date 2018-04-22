@@ -4,7 +4,7 @@ sudo FLASK_APP=server.py venv/bin/flask run --host=0.0.0.0 --port=80
 
 https://www.jakowicz.com/flask-apache-wsgi/
 ```
-sudo apt-get install apache2
+sudo apt-get install apache2 libapache2-mod-wsgi
 ```
 edit /etc/hsots to include
 ```
