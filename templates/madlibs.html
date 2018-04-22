@@ -5,9 +5,10 @@
     <title>Rad Libs</title>
 </head>
 <body>
-<form action="/radlibs/answer" method="post">
-  Noun: <input type="text" name="noun1"><br>
-  Noun: <input type="text" name="noun2"><br>
+<form action="/radlibs/{{template_name}}/answer" method="post">
+    {% for mod in modifications %}
+    {{mod.description}}: <input type="text" name="{{mod.description}}"><br>
+    {% endfor %}
   <input type="submit" value="Submit">
 </form>
 
