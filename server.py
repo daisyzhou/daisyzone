@@ -19,8 +19,7 @@ def home_page():
 @app.route('/radlibs')
 def madlibs_home():
     # TODO home should show a list or or something
-    name = library.get_random_name()
-    return redirect("/radlibs/{}".format(name))
+    return render_template("madlibs_list.html", names=library.get_names())
 
 
 @app.route('/radlibs/<template_name>')
@@ -53,4 +52,3 @@ def madlib_new():
         name = request.form["name"]
         library.add_template(name, template)
         return render_template("madlibs_new_success.html", new_name=name)
-

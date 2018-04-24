@@ -25,10 +25,13 @@ library = {
 
 
 def get_random_name():
-    # TODO make this random
+    return get_names()[0]
+
+
+def get_names():
     keys = list(library.keys())
     shuffle(keys)
-    return keys[0]
+    return keys
 
 
 def get_by_name(name):
