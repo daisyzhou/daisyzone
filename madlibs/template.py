@@ -1,4 +1,5 @@
 from collections import namedtuple
+import re
 
 # [start, end)
 ModificationRange = namedtuple("ModificationRange", ["start", "end"])
@@ -57,9 +58,46 @@ class Template(object):
         return self._modifications
 
 
+def parse_from_string(input_string):
+    """
+    :param input_string: python-style format string, except you can repeat field names and use spaces in them
+    :return: Template
+    """
+    rest_of_string = input_string
+    index_of_rest = 0
+    modifications = []
+    regex = re.compile(".*?(\{(.*?)\})")
+    print(regex.match(rest_of_string))
+    while True:
+        if regex.match(rest_of_string):
+            m = regex.match(rest_of_string)
+            modifications.append(
+                TemplateModification(mod_range=ModificationRange(start=index_of_rest+m.start(1), end=index_of_rest+m.end(1)), description=m.group(2))
+            )
+            rest_of_string = rest_of_string[len(m.group()):]
+            index_of_rest += len(m.group())
+        else:
+            break
+
+    return Template(original_text=input_string, template_modifications=modifications)
+
+
 def test():
     test_template = Template("hay is for horses, don't you know", [TemplateModification(ModificationRange(0, 3), "noun"), TemplateModification(ModificationRange(11, 17), "noun2")])
     print(test_template.fill_in_answers(["poop", "otherpoop"]))
 
     test_template2 = Template("hay is for horses, don't you know", [TemplateModification(ModificationRange(4, 6), "is"), TemplateModification(ModificationRange(29, 33), "verb")])
     print(test_template2.fill_in_answers(["isn't", "poop"]))
+
+    format_str = "hey: {noun} is for {plural noun}"
+    test_template3 = parse_from_string(format_str)
+    print(test_template3.get_modifications())
+    print(test_template3.fill_in_answers(["hay", "horses"]))
+
+    format_str = "{verb} my {noun}"
+    test_template4 = parse_from_string(format_str)
+    print(test_template4.get_modifications())
+    print(test_template4.fill_in_answers(["tub", "chubs"]))
+
+
+test()

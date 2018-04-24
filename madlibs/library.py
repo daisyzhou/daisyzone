@@ -33,3 +33,9 @@ def get_random_name():
 
 def get_by_name(name):
     return library[name]
+
+
+def add_template(name, template):
+    if name in library:
+        raise ValueError("Name {} already taken".format(name))
+    library[name] = template
